@@ -4,18 +4,14 @@ import crypto from 'crypto'
 
 const filesDestination = path.resolve(__dirname, '..', '..', 'tmp', 'uploads')
 
-const allowedMimeTypes = [
-    'image/jpeg',
-    'image/pjpeg',
-    'image/png',
-    'image/gif'
-]
+const allowedMimeTypes = ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif']
 
 const getErrorMessage = () =>
     `Invalid file type. Allowed types: 
         ${allowedMimeTypes.reduce(
-            (response, type) => response + type + ', ', '')}`
-
+            (response, type) => response + type + ', ',
+            ''
+        )}`
 
 const multerOptions: Options = {
     dest: filesDestination,
@@ -28,19 +24,19 @@ const multerOptions: Options = {
                 const fileName = `${hash.toString('hex')}-${file.originalname}`
                 cb(null, fileName)
             })
-        }
+        },
     }),
     limits: {
-        fileSize: 2048 * 1024
+        fileSize: 2 * 1024 * 1024,
     },
     fileFilter: (req, file, cb) => {
-        if(allowedMimeTypes.includes(file.mimetype)) {
+        if (allowedMimeTypes.includes(file.mimetype)) {
             cb(null, true)
             return
         }
 
         cb(new Error(getErrorMessage()))
-    }
+    },
 }
 
 export default multer(multerOptions)
