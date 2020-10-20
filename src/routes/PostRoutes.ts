@@ -8,11 +8,21 @@ const routes: Router = require('express').Router()
 const postController = new PostController(postModel)
 
 routes.post(
-    '/posts',
+    '/',
     multerConfig.single('file'),
-    (req: Request, res: Response) => {
-        console.log(req.file)
-        return res.json({ response: 'OK' })
+    async (req: Request, res: Response) => {
+        const { originalname, filename, size } = req.file
+
+        const createdPost = await postController.save({
+            name: originalname,
+            key: filename,
+            size: size,
+        })
+
+        return res.json({
+            response: 'Arquivo salvo com sucesso!',
+            post: createdPost,
+        })
     }
 )
 
