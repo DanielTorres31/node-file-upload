@@ -1,6 +1,6 @@
 import { Model } from 'mongoose'
-import PostDto from '@dto/PostDto'
-import { Post } from '@models/PostModel'
+import PostDto from '../dto/PostDto'
+import { Post } from '../models/PostModel'
 
 class PostController {
     private postModel: Model<Post>

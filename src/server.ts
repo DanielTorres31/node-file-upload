@@ -1,7 +1,7 @@
 import express, { Application, Request, Response } from 'express'
 import morgan from 'morgan'
-import registerRoutes from '@routes/index'
-import '@config/mongoDbConfig'
+import registerRoutes from './routes'
+import './config/mongoDbConfig'
 
 const app: Application = express()
 
