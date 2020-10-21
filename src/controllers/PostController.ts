@@ -12,6 +12,14 @@ class PostController {
     save(post: PostDto) {
         return this.postModel.create(post)
     }
+
+    find() {
+        return this.postModel.find()
+    }
+
+    remove(id: string) {
+        return this.postModel.remove({ _id: id })
+    }
 }
 
 export default PostController

@@ -7,23 +7,35 @@ const routes: Router = require('express').Router()
 
 const postController = new PostController(postModel)
 
+routes.get('/', async (req: Request, res: Response) => {
+    const posts = await postController.find()
+    res.json({ posts })
+})
+
 routes.post(
     '/',
     multerConfig.single('file'),
-    async (req: Request, res: Response) => {
-        const { originalname, filename, size } = req.file
+    async (req: any, res: Response) => {
+        const { originalname, filename, size, location } = req.file
 
-        const createdPost = await postController.save({
+        const post = await postController.save({
             name: originalname,
             key: filename,
             size: size,
+            url: location,
         })
 
-        return res.json({
-            response: 'Arquivo salvo com sucesso!',
-            post: createdPost,
-        })
+        return res.json({ post })
     }
 )
+
+routes.put('/:id', async (req: Request, res: Response) => {
+    res.json({ response: 'Funcionou!' })
+})
+
+routes.delete('/:id', async (req: Request, res: Response) => {
+    await postController.remove(req.params.id)
+    res.json({ response: 'Excluído com sucesso!' })
+})
 
 export default routes
