@@ -1,4 +1,7 @@
-import express, { Application, Request, Response } from 'express'
+import dotenv from 'dotenv'
+dotenv.config()
+
+import express, { Application } from 'express'
 import morgan from 'morgan'
 import registerRoutes from './routes'
 import './config/mongoDbConfig'
@@ -9,7 +12,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
-app.get('/check', (_: Request, res: Response) => res.json({ active: true }))
 registerRoutes(app)
 
 export default app
