@@ -1,7 +1,9 @@
 import { Schema, Document, model } from 'mongoose'
+import aws from 'aws-sdk'
+const s3 = new aws.S3()
 
 export interface Post extends Document {
-    name: string
+    name: String
     size: Number
     key: String
     url?: String
@@ -21,6 +23,20 @@ const PostSchema = new Schema<Post>({
 PostSchema.pre<Post>('save', function () {
     if (!this.url) {
         this.url = `${process.env.APP_URL}/files/${this.key}`
+    }
+})
+
+PostSchema.pre<Post>('remove', function () {
+    if (process.env.STORAGE_TYPE === 's3') {
+        return s3
+            .deleteObject(
+                {
+                    Bucket: process.env.S3_BUCKET || '',
+                    Key: '' + this.key,
+                },
+                () => {}
+            )
+            .promise()
     }
 })
 
