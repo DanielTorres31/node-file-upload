@@ -1,8 +1,10 @@
 import multer, { Options } from 'multer'
+import multerS3 from 'multer-s3'
+import aws from 'aws-sdk'
 import path from 'path'
 import crypto from 'crypto'
 
-const filesDestination = path.resolve(__dirname, '..', '..', 'tmp', 'uploads')
+const filesDestination = path.resolve(__dirname, '..', '..', 'tmp')
 
 const allowedMimeTypes = ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif']
 
@@ -13,19 +15,33 @@ const getErrorMessage = () =>
             ''
         )}`
 
+const generateFileName = (file: any, cb: Function) => {
+    crypto.randomBytes(16, (err, hash) => {
+        if (err) cb(err, '')
+
+        const fileName = `${hash.toString('hex')}-${file.originalname}`
+        cb(null, fileName)
+    })
+}
+
+const storageTypes: any = {
+    local: multer.diskStorage({
+        destination: filesDestination,
+        filename: (req, file, cb) => generateFileName(file, cb),
+    }),
+    s3: multerS3({
+        s3: new aws.S3(),
+        bucket: process.env.S3_BUCKET || '',
+        contentType: multerS3.AUTO_CONTENT_TYPE,
+        acl: 'public-read',
+        key: (req, file, cb) => generateFileName(file, cb),
+    }),
+}
+
+const selectedStorageType = process.env.STORAGE_TYPE || 'local'
 const multerOptions: Options = {
     dest: filesDestination,
-    storage: multer.diskStorage({
-        destination: (req, file, cb) => cb(null, filesDestination),
-        filename: (req, file, cb) => {
-            crypto.randomBytes(16, (err, hash) => {
-                if (err) cb(err, '')
-
-                const fileName = `${hash.toString('hex')}-${file.originalname}`
-                cb(null, fileName)
-            })
-        },
-    }),
+    storage: storageTypes[selectedStorageType],
     limits: {
         fileSize: 2 * 1024 * 1024,
     },
