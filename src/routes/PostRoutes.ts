@@ -16,11 +16,11 @@ routes.post(
     '/',
     multerConfig.single('file'),
     async (req: any, res: Response) => {
-        const { originalname, filename, size, location } = req.file
+        const { originalname, key, size, location } = req.file
 
         const post = await postController.save({
             name: originalname,
-            key: filename,
+            key: key,
             size: size,
             url: location,
         })
@@ -31,6 +31,11 @@ routes.post(
 
 routes.put('/:id', async (req: Request, res: Response) => {
     res.json({ response: 'Funcionou!' })
+})
+
+routes.delete('/clear', async (req: Request, res: Response) => {
+    await postController.removeAll()
+    res.json({ response: 'Excluídos com sucesso!' })
 })
 
 routes.delete('/:id', async (req: Request, res: Response) => {

@@ -17,8 +17,19 @@ class PostController {
         return this.postModel.find()
     }
 
-    remove(id: string) {
-        return this.postModel.remove({ _id: id })
+    async remove(id: string) {
+        const post = await this.postModel.findById(id).exec()
+
+        if (post) {
+            await post.remove()
+        }
+    }
+
+    async removeAll() {
+        const posts = await this.find()
+
+        const promises = posts.map(post => this.remove(post._id))
+        await Promise.all(promises)
     }
 }
 
