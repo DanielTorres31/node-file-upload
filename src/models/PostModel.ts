@@ -18,4 +18,10 @@ const PostSchema = new Schema<Post>({
     },
 })
 
+PostSchema.pre<Post>('save', function () {
+    if (!this.url) {
+        this.url = `${process.env.APP_URL}/files/${this.key}`
+    }
+})
+
 export default model<Post>('Post', PostSchema)
