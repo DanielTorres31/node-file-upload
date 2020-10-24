@@ -1,5 +1,9 @@
 import { Schema, Document, model } from 'mongoose'
 import aws from 'aws-sdk'
+import fs from 'fs'
+import path from 'path'
+import { promisify } from 'util'
+import { filesDestination } from '../config/multerConfig'
 const s3 = new aws.S3()
 
 export interface Post extends Document {
@@ -37,6 +41,10 @@ PostSchema.pre<Post>('remove', function () {
                 () => {}
             )
             .promise()
+    } else {
+        return promisify(fs.unlink)(
+            path.resolve(`${filesDestination}/${this.key}`)
+        )
     }
 })
 

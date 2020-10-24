@@ -4,7 +4,13 @@ import aws from 'aws-sdk'
 import path from 'path'
 import crypto from 'crypto'
 
-const filesDestination = path.resolve(__dirname, '..', '..', 'tmp')
+export const filesDestination = path.resolve(
+    __dirname,
+    '..',
+    '..',
+    'tmp',
+    'uploads'
+)
 
 const allowedMimeTypes = ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif']
 
