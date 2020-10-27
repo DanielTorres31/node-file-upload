@@ -9,6 +9,7 @@ const registerRoutes = (app: Application) => {
         '/files',
         express.static(path.resolve(__dirname, '..', '..', 'tmp'))
     )
+    app.get('*', (_: Request, res: Response) => res.send('404 Not Found'))
 }
 
 export default registerRoutes
