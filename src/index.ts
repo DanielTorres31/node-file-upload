@@ -1,5 +1,5 @@
 import server from './server'
 
-server.listen(3000, () =>
-    console.log('Server listening on http://localhost:3000')
-)
+const host = process.env.HOST || 'http://localhost'
+const port = parseInt(process.env.PORT || '3000')
+server.listen(port, () => console.log(`Server listening on ${host}:${port}`))
