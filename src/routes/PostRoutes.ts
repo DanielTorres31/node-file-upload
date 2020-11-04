@@ -29,10 +29,6 @@ routes.post(
     }
 )
 
-routes.put('/:id', async (req: Request, res: Response) => {
-    res.json({ response: 'Funcionou!' })
-})
-
 routes.delete('/clear', async (req: Request, res: Response) => {
     await postController.removeAll()
     res.json({ response: 'Excluídos com sucesso!' })
