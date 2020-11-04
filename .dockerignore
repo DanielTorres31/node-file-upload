@@ -1,0 +1,16 @@
+# IDE
+.vscode/
+
+# Git
+.git/
+.gitignore
+
+# Prettier Formatter
+.prettierrc.js
+
+# Project 
+node_modules/
+dist/
+tmp/
+nodemon.json
+README.md
