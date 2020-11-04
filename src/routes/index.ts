@@ -7,7 +7,7 @@ const registerRoutes = (app: Application) => {
     app.use('/posts', PostRoutes)
     app.use(
         '/files',
-        express.static(path.resolve(__dirname, '..', '..', 'tmp'))
+        express.static(path.resolve(__dirname, '..', '..', 'tmp', 'uploads'))
     )
     app.get('*', (_: Request, res: Response) => res.send('404 Not Found'))
 }
