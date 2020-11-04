@@ -34,9 +34,9 @@ Caso utilize **STORAGE_TYPE=s3** é necessário definir as váriaveis abaixo:
 
 Para executar o projeto, no terminal, execute: `docker-compose up -d`.
 
-Esse comando irá criar e iniciar os dois containers necessário para o funcionamento correto da API, será criado um container para o Banco de Dados (MongoDB) e outro para a API.
+Esse comando irá criar e iniciar os dois containers necessários para o funcionamento correto da API, será criado um container para o Banco de Dados (MongoDB) e outro para a API.
 
-Para parar a API, execute: `docker-compose down`. Esse comando irá parar todos os containers criados para o projeto.
+Para parar os containers iniciados, execute: `docker-compose down`.
 
 # Tecnologias e Frameworks Utilizados
 
